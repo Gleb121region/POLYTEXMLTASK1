@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 
 # Loading datasets
-spam = pd.read_csv('data/spam.csv')
+spam = pd.read_csv('/Users/popovgleb/PycharmProjects/polytexTask/1/data/spam.csv')
 
 
 # Defining function to plot accuracy score depending on training and test samples
@@ -35,7 +35,8 @@ def plot_accuracy(data, title):
     plt.title(title)
     plt.xlabel('Number of training samples')
     plt.ylabel('Accuracy score')
-    plt.legend().show()
+    plt.legend()
+    plt.show()
 
 
 # Plotting accuracy score depending on training and test samples for spam dataset

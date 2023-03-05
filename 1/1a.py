@@ -5,7 +5,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import LabelEncoder
 
 # Read in data
-data = pd.read_csv('data/tic_tac_toe.txt', header=None)
+data = pd.read_csv('1/data/tic_tac_toe.txt', header=None)
 
 # Encode string values to numerical values
 encoder = LabelEncoder()

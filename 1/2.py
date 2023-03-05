@@ -4,6 +4,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 
+# todo: переделать! поменять значения x1_1 … и т.д
+
 # Generate random data
 x1_1 = np.random.normal(10, 4, 50)
 x1_2 = np.random.normal(20, 3, 50)
