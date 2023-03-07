@@ -23,9 +23,8 @@ def get_data(file_name):
     return X, y
 
 
-# Загрузка данных из файлов
-X_train, y_train = get_data('data/svmdata_c.txt')
-X_test, y_test = get_data('data/svmdata_c_test.txt')
+X_train, y_train = get_data('/Users/popovgleb/PycharmProjects/polytexTask/1/data/svmdata_c.txt')
+X_test, y_test = get_data('/Users/popovgleb/PycharmProjects/polytexTask/1/data/svmdata_c_test.txt')
 
 # Построение моделей SVM с различными ядрами
 models = {'linear': SVC(kernel='linear'),

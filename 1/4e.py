@@ -1,4 +1,3 @@
-# Импортируем необходимые библиотеки
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.inspection import DecisionBoundaryDisplay

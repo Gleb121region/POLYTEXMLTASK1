@@ -1,53 +1,78 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
+from scipy.stats import norm
+from sklearn.metrics import accuracy_score, roc_curve, precision_recall_curve, ConfusionMatrixDisplay
 from sklearn.naive_bayes import GaussianNB
 
-# todo: переделать! поменять значения x1_1 … и т.д
 
-# Generate random data
-x1_1 = np.random.normal(10, 4, 50)
-x1_2 = np.random.normal(20, 3, 50)
-x2_1 = np.random.normal(14, 4, 50)
-x2_2 = np.random.normal(18, 4, 50)
+class BayesClassifier:
+    def __init__(self):
+        self.class_1_prior = None
+        self.class_minus_1_prior = None
+        self.class_1_params = None
+        self.class_minus_1_params = None
 
-# Plot data
-plt.scatter(x1_1, x2_1, label='Class -1')
-plt.scatter(x1_2, x2_2, marker='x', label='Class 1')
-plt.xlim(0, 30)
-plt.ylim(0, 30)
+    def fit(self, X, y):
+        self.class_1_prior = np.sum(y == 1) / len(y)
+        self.class_minus_1_prior = np.sum(y == -1) / len(y)
+        self.class_1_params = [(np.mean(X[y == 1][:, i]), np.std(X[y == 1][:, i])) for i in range(X.shape[1])]
+        self.class_minus_1_params = [(np.mean(X[y == -1][:, i]), np.std(X[y == -1][:, i])) for i in range(X.shape[1])]
+
+    def predict(self, X):
+        class_1_probabilities = []
+        class_minus_1_probabilities = []
+
+        for i in range(X.shape[0]):
+            class_1_prob = self.class_1_prior
+            class_minus_1_prob = self.class_minus_1_prior
+
+            for j in range(X.shape[1]):
+                class_1_prob *= norm.pdf(X[i][j], *self.class_1_params[j])
+                class_minus_1_prob *= norm.pdf(X[i][j], *self.class_minus_1_params[j])
+
+            class_1_probabilities.append(class_1_prob)
+            class_minus_1_probabilities.append(class_minus_1_prob)
+
+        return np.array(class_1_probabilities) > np.array(class_minus_1_probabilities)
+
+
+x1p2 = np.random.normal(20, 3, 20)
+x2p2 = np.random.normal(4, 4, 20)
+
+x1m1 = np.random.normal(15, 4, 80)
+x2m1 = np.random.normal(21, 4, 80)
+
+X1 = np.concatenate([x1p2, x1m1])
+X2 = np.concatenate([x2p2, x2m1])
+y = np.concatenate([np.ones(20), -np.ones(80)])
+
+plt.scatter(x1p2, x2p2, label='Class 1')
+plt.scatter(x1m1, x2m1, label='Class -1')
+plt.xlabel('X1')
+plt.ylabel('X2')
 plt.legend()
 plt.show()
 
-# Create data frame
-x1 = np.concatenate((x1_1, x1_2))
-x2 = np.concatenate((x2_1, x2_2))
-class_label = np.concatenate((np.repeat('-1', 50), np.repeat('1', 50)))
-data = pd.DataFrame({'x1': x1, 'x2': x2, 'class': class_label})
+classifier = GaussianNB()
+classifier.fit(np.column_stack([X1, X2]), y)
 
-# Calculate misclassification rates for different test set sizes
-test_sizes = [0.2, 0.4, 0.6, 0.8]
-mistake_rates = []
-for size in test_sizes:
-    # Split data into training and test sets
-    X = data[['x1', 'x2']]
-    y = data['class']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size)
+y_pred = classifier.predict(np.column_stack([X1, X2]))
 
-    # Create a Naive Bayes Classifier and fit the model
-    clf = GaussianNB()
-    clf.fit(X_train, y_train)
+print('Accuracy:', accuracy_score(y, y_pred))
+ConfusionMatrixDisplay.from_predictions(y, y_pred)
+plt.show()
 
-    # Calculate misclassification rate on test set
-    y_pred = clf.predict(X_test)
-    mistake_rate = (y_pred != y_test).sum() / len(y_test)
+fpr, tpr, thresholds = roc_curve(y, y_pred)
+precision, recall, thresholds = precision_recall_curve(y, y_pred)
 
-    mistake_rates.append(mistake_rate)
+plt.plot(fpr, tpr)
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC curve')
+plt.show()
 
-# Plot the results in a graph
-plt.plot(test_sizes, mistake_rates)
-plt.xlabel('Test Set Size')
-plt.ylabel('Misclassification Rate')
-plt.title('Effect of Test Set Size on Naive Bayes Classification Accuracy')
+plt.plot(recall, precision)
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('PR curve')
 plt.show()

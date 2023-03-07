@@ -11,7 +11,7 @@ def get_data(file_name):
                        names=['Id', 'RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe', 'Type'],
                        header=None)
 
-    # Encode string values to numerical values
+    # Кодирование строковых значений в числовые значения
     encoder = LabelEncoder()
     for col in data.columns[:-1]:
         data[col] = encoder.fit_transform(data[col])
