@@ -1,40 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import norm
+import pandas as pd
 from sklearn.metrics import accuracy_score, roc_curve, precision_recall_curve, ConfusionMatrixDisplay
+from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
-
-
-class BayesClassifier:
-    def __init__(self):
-        self.class_1_prior = None
-        self.class_minus_1_prior = None
-        self.class_1_params = None
-        self.class_minus_1_params = None
-
-    def fit(self, X, y):
-        self.class_1_prior = np.sum(y == 1) / len(y)
-        self.class_minus_1_prior = np.sum(y == -1) / len(y)
-        self.class_1_params = [(np.mean(X[y == 1][:, i]), np.std(X[y == 1][:, i])) for i in range(X.shape[1])]
-        self.class_minus_1_params = [(np.mean(X[y == -1][:, i]), np.std(X[y == -1][:, i])) for i in range(X.shape[1])]
-
-    def predict(self, X):
-        class_1_probabilities = []
-        class_minus_1_probabilities = []
-
-        for i in range(X.shape[0]):
-            class_1_prob = self.class_1_prior
-            class_minus_1_prob = self.class_minus_1_prior
-
-            for j in range(X.shape[1]):
-                class_1_prob *= norm.pdf(X[i][j], *self.class_1_params[j])
-                class_minus_1_prob *= norm.pdf(X[i][j], *self.class_minus_1_params[j])
-
-            class_1_probabilities.append(class_1_prob)
-            class_minus_1_probabilities.append(class_minus_1_prob)
-
-        return np.array(class_1_probabilities) > np.array(class_minus_1_probabilities)
-
 
 x1p2 = np.random.normal(20, 3, 20)
 x2p2 = np.random.normal(4, 4, 20)
@@ -53,8 +22,14 @@ plt.ylabel('X2')
 plt.legend()
 plt.show()
 
+data = pd.DataFrame({'x1': X1, 'x2': X2, 'class': y})
+
+X = data[['x1', 'x2']]
+y = data['class']
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.5)
+
 classifier = GaussianNB()
-classifier.fit(np.column_stack([X1, X2]), y)
+classifier.fit(X_train, y_train)
 
 y_pred = classifier.predict(np.column_stack([X1, X2]))
 
@@ -62,8 +37,8 @@ print('Accuracy:', accuracy_score(y, y_pred))
 ConfusionMatrixDisplay.from_predictions(y, y_pred)
 plt.show()
 
-fpr, tpr, thresholds = roc_curve(y, y_pred)
-precision, recall, thresholds = precision_recall_curve(y, y_pred)
+fpr, tpr, _ = roc_curve(y, y_pred)
+precision, recall, _ = precision_recall_curve(y, y_pred)
 
 plt.plot(fpr, tpr)
 plt.xlabel('False Positive Rate')

@@ -53,10 +53,9 @@ def linear_kernel_model(X, y):
         # Создание финальной модели SVM с оптимальным значением штрафного параметра
         if name.isdigit():
             final_model = SVC(kernel='poly', degree=name, gamma=optimal_gamma)
-            final_model.fit(X_train, y_train)
         else:
             final_model = SVC(kernel=name, gamma=optimal_gamma)
-            final_model.fit(X_train, y_train)
+        final_model.fit(X_train, y_train)
 
         # Проверка 0-ошибки на тестовой выборке
         test_accuracy = final_model.score(X_test, y_test)
@@ -64,7 +63,7 @@ def linear_kernel_model(X, y):
 
         X0, X1 = X['X1'], X['X2']
 
-        disp = DecisionBoundaryDisplay.from_estimator(
+        DecisionBoundaryDisplay.from_estimator(
             final_model, X,
             response_method='predict',
             cmap=plt.cm.coolwarm,

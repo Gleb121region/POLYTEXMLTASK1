@@ -37,9 +37,8 @@ models = {'linear': SVC(kernel='linear'),
           'rbf': SVC(kernel='rbf')}
 
 # Поиск оптимального значения штрафного параметра с помощью GridSearchCV для каждой модели
-parameters = {
-    'C': [10 ** -3, 10 ** -2, 10 ** -1,
-          10 ** 0, 10 ** 1, 10 ** 2, 10 ** 3]}
+parameters = {'C': [10 ** -3, 10 ** -2, 10 ** -1,
+                    10 ** 0, 10 ** 1, 10 ** 2, 10 ** 3]}
 
 
 def linear_kernel_model(X, y):
@@ -54,11 +53,10 @@ def linear_kernel_model(X, y):
 
         # Создание финальной модели SVM с оптимальным значением штрафного параметра
         if name.isdigit():
-            final_model = SVC(kernel='poly', degree=int(name), C=optimal_C)
-            final_model.fit(X_train, y_train)
+            final_model = SVC(kernel='poly', degree=int(name), C=optimal_C, gamma='auto')
         else:
-            final_model = SVC(kernel=name, C=optimal_C)
-            final_model.fit(X_train, y_train)
+            final_model = SVC(kernel=name, C=optimal_C, gamma='auto')
+        final_model.fit(X_train, y_train)
 
         # Проверка 0-ошибки на тестовой выборке
         test_accuracy = final_model.score(X_test, y_test)
@@ -66,7 +64,7 @@ def linear_kernel_model(X, y):
 
         X0, X1 = X['X1'], X['X2']
 
-        disp = DecisionBoundaryDisplay.from_estimator(
+        DecisionBoundaryDisplay.from_estimator(
             final_model,
             X,
             response_method="predict",
