@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import LabelEncoder
@@ -24,8 +25,7 @@ def linear_kernel_model(X, y):
     model = SVC(kernel='linear')
     # Поиск оптимального значения штрафного параметра с помощью GridSearchCV
     parameters = {
-        'C': [10 ** -10, 10 ** -9, 10 ** -8, 10 ** -7, 10 ** -6, 10 ** -5, 10 ** -4, 10 ** -3, 10 ** -2, 10 ** -1,
-              10 ** 0, 10 ** 1, 10 ** 2, 10 ** 3, 10 ** 4, 10 ** 5]}
+        'C': np.arange(.1, 100, .1)}
     clf = GridSearchCV(model, parameters, cv=5)
     clf.fit(X, y)
     # Выбор оптимального значения штрафного параметра

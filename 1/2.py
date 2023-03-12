@@ -26,7 +26,7 @@ data = pd.DataFrame({'x1': X1, 'x2': X2, 'class': y})
 
 X = data[['x1', 'x2']]
 y = data['class']
-X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.5)
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.2)
 
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
