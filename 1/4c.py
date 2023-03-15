@@ -21,28 +21,23 @@ def get_data(file_name):
     return X, y
 
 
-X_train, y_train = get_data('/Users/popovgleb/PycharmProjects/polytexTask/1/data/svmdata_c.txt')
-X_test, y_test = get_data('/Users/popovgleb/PycharmProjects/polytexTask/1/data/svmdata_c_test.txt')
-
-classifiers = (SVC(kernel='linear', gamma='auto', C=0.1),
-               SVC(kernel='rbf', gamma='scale', C=23.3),
-               SVC(kernel='sigmoid', gamma='scale', C=0.1),
-               SVC(kernel='poly', degree=1, gamma='scale', C=0.1),
-               SVC(kernel='poly', degree=2, gamma='scale', C=0.2),
-               SVC(kernel='poly', degree=3, gamma='scale', C=1.3),
-               SVC(kernel='poly', degree=4, gamma='scale', C=44.7),
-               SVC(kernel='poly', degree=5, gamma='scale', C=100))
-titles = ('SVC with linear kernel',
-          'SVC with RBF kernel',
-          'SVC with Sigmoid kernel',
-          'SVC with polynomial (degree=1) kernel',
-          'SVC with polynomial (degree=2) kernel',
-          'SVC with polynomial (degree=3) kernel',
-          'SVC with polynomial (degree=4) kernel',
-          'SVC with polynomial (degree=5) kernel')
-
-
 def builder_plt(X, y):
+    classifiers = (SVC(kernel='linear', gamma='auto', C=0.1),
+                   SVC(kernel='rbf', gamma='scale', C=23.3),
+                   SVC(kernel='sigmoid', gamma='scale', C=0.1),
+                   SVC(kernel='poly', degree=1, gamma='scale', C=0.1),
+                   SVC(kernel='poly', degree=2, gamma='scale', C=0.2),
+                   SVC(kernel='poly', degree=3, gamma='scale', C=1.3),
+                   SVC(kernel='poly', degree=4, gamma='scale', C=44.7),
+                   SVC(kernel='poly', degree=5, gamma='scale', C=100))
+    titles = ('SVC with linear kernel',
+              'SVC with RBF kernel',
+              'SVC with Sigmoid kernel',
+              'SVC with polynomial (degree=1) kernel',
+              'SVC with polynomial (degree=2) kernel',
+              'SVC with polynomial (degree=3) kernel',
+              'SVC with polynomial (degree=4) kernel',
+              'SVC with polynomial (degree=5) kernel')
     for title, model in zip(titles, classifiers):
         model.fit(X_train, y_train)
         test_accuracy = model.score(X_test, y_test)
@@ -58,4 +53,7 @@ def builder_plt(X, y):
         print('Number of reference vectors:', len(model.support_vectors_))
 
 
-builder_plt(X_train, y_train)
+if __name__ == '__main__':
+    X_train, y_train = get_data('/Users/popovgleb/PycharmProjects/polytexTask/1/data/svmdata_c.txt')
+    X_test, y_test = get_data('/Users/popovgleb/PycharmProjects/polytexTask/1/data/svmdata_c_test.txt')
+    builder_plt(X_train, y_train)

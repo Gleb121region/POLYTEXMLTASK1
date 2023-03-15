@@ -28,9 +28,6 @@ X_test, y_test = get_data('data/svmdata_a_test.txt')
 
 def linear_kernel_model(X, y):
     model = SVC(kernel='linear', gamma='auto')
-    # model = LinearSVC(C=C, max_iter=10000),
-    # model = SVC(kernel="rbf", gamma=0.7, C=C),
-    # model = SVC(kernel="poly", degree=3, gamma="auto", C=C),
     model.fit(X, y)
 
     X0, X1 = X['X1'], X['X2']
@@ -46,10 +43,10 @@ def linear_kernel_model(X, y):
     return model
 
 
-model = linear_kernel_model(X_train, y_train)
+grid = linear_kernel_model(X_train, y_train)
 
-y_pred_train = model.predict(X_train)
-y_pred_test = model.predict(X_test)
+y_pred_train = grid.predict(X_train)
+y_pred_test = grid.predict(X_test)
 
 print('Confusion matrix on train sample:')
 ConfusionMatrixDisplay.from_predictions(y_train, y_pred_train)
