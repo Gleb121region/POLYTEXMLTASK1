@@ -36,8 +36,9 @@ def print_result(model):
     print('precision:', precision)
     print('recall:', recall)
     print('f1 score:', f1)
-    print(roc_auc)
+    print('roc_auc:', roc_auc)
     ConfusionMatrixDisplay.from_predictions(y_test, y_pred)
+    plt.title(str(model))
     plt.show()
 
 

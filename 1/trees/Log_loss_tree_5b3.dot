@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled", color="black", fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label="dollar <= 0.056\nlog_loss = 0.968\nsamples = 3680\nvalue = [2224, 1456]\nclass = 1", fillcolor="#f6d3bb"] ;
+1 [label="bang <= 0.08\nlog_loss = 0.784\nsamples = 2768\nvalue = [2121, 647]\nclass = 1", fillcolor="#eda775"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="crl.tot <= 29.5\nlog_loss = 0.466\nsamples = 1906\nvalue = [1717, 189]\nclass = 1", fillcolor="#e88f4f"] ;
+1 -> 2 ;
+3 [label="log_loss = 0.237\nsamples = 670\nvalue = [644, 26]\nclass = 1", fillcolor="#e68641"] ;
+2 -> 3 ;
+4 [label="log_loss = 0.563\nsamples = 1236\nvalue = [1073, 163]\nclass = 1", fillcolor="#e99457"] ;
+2 -> 4 ;
+5 [label="crl.tot <= 85.5\nlog_loss = 0.997\nsamples = 862\nvalue = [404, 458]\nclass = 1", fillcolor="#e8f3fc"] ;
+1 -> 5 ;
+6 [label="log_loss = 0.911\nsamples = 438\nvalue = [295, 143]\nclass = 1", fillcolor="#f2be99"] ;
+5 -> 6 ;
+7 [label="log_loss = 0.822\nsamples = 424\nvalue = [109, 315]\nclass = 1", fillcolor="#7ebfee"] ;
+5 -> 7 ;
+8 [label="bang <= 0.143\nlog_loss = 0.509\nsamples = 912\nvalue = [103, 809]\nclass = 1", fillcolor="#52a9e8"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="money <= 0.025\nlog_loss = 0.876\nsamples = 277\nvalue = [82, 195]\nclass = 1", fillcolor="#8cc6f0"] ;
+8 -> 9 ;
+10 [label="log_loss = 0.998\nsamples = 157\nvalue = [74, 83]\nclass = 1", fillcolor="#eaf4fc"] ;
+9 -> 10 ;
+11 [label="log_loss = 0.353\nsamples = 120\nvalue = [8, 112]\nclass = 1", fillcolor="#47a4e7"] ;
+9 -> 11 ;
+12 [label="crl.tot <= 487.5\nlog_loss = 0.21\nsamples = 635\nvalue = [21, 614]\nclass = 1", fillcolor="#40a0e6"] ;
+8 -> 12 ;
+13 [label="log_loss = 0.325\nsamples = 354\nvalue = [21, 333]\nclass = 1", fillcolor="#45a3e7"] ;
+12 -> 13 ;
+14 [label="log_loss = 0.0\nsamples = 281\nvalue = [0, 281]\nclass = 1", fillcolor="#399de5"] ;
+12 -> 14 ;
+}
