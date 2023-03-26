@@ -1,4 +1,5 @@
 import os
+
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -67,7 +68,7 @@ def task_first(title):
     act = {}
     for activation in activations:
         opt = {}
-        model = tf.keras.models.Sequential([tf.keras.layers.Input(2), tf.keras.layers.Dense(1, activation=activation)])
+        model = tf.keras.models.Sequential([tf.keras.layers.Dense(1, input_shape=(2,), activation=activation)])
         for optimizer in optimizers:
             temp = []
             model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
@@ -94,11 +95,13 @@ def task_second():
     for _ in range(n):
         tf.keras.backend.clear_session()
         x_train, x_test, y_train, y_test = load_data('nn_1.csv')
-        model = tf.keras.models.Sequential([
-            tf.keras.layers.Input(2), tf.keras.layers.Dense(64, activation='tanh'),
-            tf.keras.layers.Dense(64, activation='relu'), tf.keras.layers.Dense(2, activation='sigmoid')
+        model = tf.keras.Sequential([
+            tf.keras.layers.Dense(64, activation='relu', input_shape=(2,)),
+            tf.keras.layers.Dense(64, activation='relu'),
+            tf.keras.layers.Dense(1, activation='tanh')
         ])
-        model.compile(optimizer='Adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+                      metrics=['accuracy'])
         model.fit(x_train, y_train, epochs=50, verbose=0)
         loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
         acc_sum += test_acc
@@ -119,15 +122,17 @@ def task_third():
         axes[i].set_title(str(y_train[i]))
 
     model = tf.keras.models.Sequential([
-        tf.keras.layers.Flatten(input_shape=(28, 28)), tf.keras.layers.Dense(16, activation='tanh'),
-        tf.keras.layers.Dense(16, activation='relu'), tf.keras.layers.Dense(10, activation='sigmoid')
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(10)
     ])
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                  metrics=['accuracy'])
     model.fit(x_train, y_train, epochs=10)
 
-    loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
+    test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
     print("Test Accuracy:", test_acc)
-    print("Loss:", loss)
+    print("Loss:", test_loss)
 
     prediction_values = (model.predict(x_test) > 0.5).astype("int32")
 
@@ -142,11 +147,11 @@ def task_third():
 
 
 if __name__ == '__main__':
-    # create_an_image(r'C:\Users\Gelog\Desktop\POLYTEXMLTASK1\2\nn_0.csv')
-    # create_an_image(r'C:\Users\Gelog\Desktop\POLYTEXMLTASK1\2\nn_1.csv')
-    create_an_image_accuracy_to_epochs(r'C:\Users\Gelog\Desktop\POLYTEXMLTASK1\2\nn_0.csv')
-    # show_accuracy_epochs(r'C:\Users\Gelog\Desktop\POLYTEXMLTASK1\2\nn_1.csv')
-    # part_1(r'C:\Users\Gelog\Desktop\POLYTEXMLTASK1\2\nn_0.csv')
-    # part_2()
-    # print('========================')
-    # part_3()
+    create_an_image('nn_0.csv')
+    create_an_image('nn_1.csv')
+    create_an_image_accuracy_to_epochs('nn_0.csv')
+    create_an_image_accuracy_to_epochs('nn_1.csv')
+    task_first('nn_0.csv')
+    task_second()
+    print('========================')
+    task_third()
