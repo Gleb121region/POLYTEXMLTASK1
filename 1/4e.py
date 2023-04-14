@@ -43,7 +43,7 @@ def builder_plt(X, y):
         test_accuracy = model.score(X_test, y_test)
         print("Test accuracy: {}".format(test_accuracy))
         X0, X1 = X['X1'], X['X2']
-        DecisionBoundaryDisplay.from_estimator(model, X, response_method="predict", cmap=plt.cm.coolwarm,
+        DecisionBoundaryDisplay.from_estimator(model, X, response_method="predict", cmap=plt.cm.Pastel1,
                                                xlabel='X1', ylabel='X2')
         plt.scatter(X0, X1, c=y)
         plt.xlabel('X1')

@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 def view_scores(res, _name, _type, metric):
     plt.plot(list(res.keys()), list(res.values()))
     plt.title(_name + '\t' + _type)
-    plt.xlabel("N clusters")
+    plt.xlabel('N clusters')
     plt.ylabel(metric)
     plt.show()
 
@@ -37,7 +37,8 @@ if __name__ == '__main__':
         elif name == 'clustering_3.csv':
             i = 5
 
-        plt.scatter(X_principal['C1'], X_principal['C2'],c=AgglomerativeClustering(n_clusters=i).fit_predict(X_principal))
+        plt.scatter(X_principal['C1'], X_principal['C2'],
+                    c=AgglomerativeClustering(n_clusters=i).fit_predict(X_principal))
         plt.title(name + ' Hierarchical')
         plt.show()
         plt.scatter(X_principal['C1'], X_principal['C2'], c=KMeans(n_clusters=i).fit_predict(X_principal))
@@ -56,14 +57,24 @@ if __name__ == '__main__':
             print(metrics.davies_bouldin_score(X_principal, DBSCAN().fit_predict(X_principal)))
             print(metrics.calinski_harabasz_score(X_principal, DBSCAN().fit_predict(X_principal)))
         for i in range(2, 10):
-            silhouette_score_k_means[i] = metrics.silhouette_score(X_principal,KMeans(n_clusters=i).fit_predict(X_principal))
-            davies_bouldin_score_k_means[i] = metrics.davies_bouldin_score(X_principal,KMeans(n_clusters=i).fit_predict(X_principal))
-            calinski_harabasz_score_k_means[i] = metrics.calinski_harabasz_score(X_principal,KMeans(n_clusters=i).fit_predict(X_principal))
-            silhouette_score_hierarchical[i] = metrics.silhouette_score(X_principal, AgglomerativeClustering(n_clusters=i).fit_predict(X_principal))
-            davies_bouldin_score_hierarchical[i] = metrics.davies_bouldin_score(X_principal,AgglomerativeClustering(n_clusters=i).fit_predict(X_principal))
-            calinski_harabasz_score_hierarchical[i] = metrics.calinski_harabasz_score(X_principal,AgglomerativeClustering(n_clusters=i).fit_predict(X_principal))
-        view_scores(davies_bouldin_score_k_means, name, 'KMeans', "Davies-Bouldinscore")
-        view_scores(calinski_harabasz_score_k_means, name, 'KMeans', "Calinski_Harabasz score")
-        view_scores(silhouette_score_hierarchical, name, 'Hierarchical', "Silhouettescore")
-        view_scores(davies_bouldin_score_hierarchical, name, 'Hierarchical', "Davies-Bouldin score")
-        view_scores(calinski_harabasz_score_hierarchical, name, 'Hierarchical', "Calinski_Harabasz score")
+            silhouette_score_k_means[i] = metrics.silhouette_score(X_principal,
+                                                                   KMeans(n_clusters=i).fit_predict(X_principal))
+            davies_bouldin_score_k_means[i] = metrics.davies_bouldin_score(X_principal,
+                                                                           KMeans(n_clusters=i).fit_predict(
+                                                                               X_principal))
+            calinski_harabasz_score_k_means[i] = metrics.calinski_harabasz_score(X_principal,
+                                                                                 KMeans(n_clusters=i).fit_predict(
+                                                                                     X_principal))
+            silhouette_score_hierarchical[i] = metrics.silhouette_score(X_principal, AgglomerativeClustering(
+                n_clusters=i).fit_predict(X_principal))
+            davies_bouldin_score_hierarchical[i] = metrics.davies_bouldin_score(X_principal, AgglomerativeClustering(
+                n_clusters=i).fit_predict(X_principal))
+            calinski_harabasz_score_hierarchical[i] = metrics.calinski_harabasz_score(X_principal,
+                                                                                      AgglomerativeClustering(
+                                                                                          n_clusters=i).fit_predict(
+                                                                                          X_principal))
+        view_scores(davies_bouldin_score_k_means, name, 'KMeans', 'Davies-Bouldinscore')
+        view_scores(calinski_harabasz_score_k_means, name, 'KMeans', 'Calinski_Harabasz score')
+        view_scores(silhouette_score_hierarchical, name, 'Hierarchical', 'Silhouettescore')
+        view_scores(davies_bouldin_score_hierarchical, name, 'Hierarchical', 'Davies-Bouldin score')
+        view_scores(calinski_harabasz_score_hierarchical, name, 'Hierarchical', 'Calinski_Harabasz score')

@@ -34,7 +34,7 @@ def linear_kernel_model(X, y):
 
     DecisionBoundaryDisplay.from_estimator(model, X,
                                            response_method="predict",
-                                           cmap=plt.cm.coolwarm, xlabel='X1', ylabel='X2')
+                                           cmap=plt.cm.Pastel1, xlabel='X1', ylabel='X2')
     plt.scatter(X0, X1, c=y)
     plt.xlabel('X1')
     plt.ylabel('X2')
