@@ -8,6 +8,7 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
 data = pd.read_csv('data/glass.csv')
+data = data.drop(['Id'], axis=1)
 X = data.drop('Type', axis=1)
 y = data['Type']
 
